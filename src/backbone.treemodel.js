@@ -17,6 +17,13 @@
 			this._nodes = new TreeCollection();
 			this._nodes.parent = this;
 			if(node && node.nodes) this.add(node.nodes);
+
+			//Pass the events to the root node.
+			this._nodes.on("all", function(event, model, collection, options) {
+				if(!this.isRoot()) {
+					this.root().trigger.apply(this.root(), arguments);
+				}
+			}, this);
 		},
 
 		/**
