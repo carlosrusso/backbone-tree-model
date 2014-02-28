@@ -286,20 +286,36 @@ describe('Backbone Tree', function() {
 		});
 	});
 
-	describe('#bubbleRemove', function() {
-		it('It should bubble the remove event', function(done) {
-			tree.once("remove", function(model) {
-				expect(model.get("id")).to.be('title_6');
+	describe('#bubbleAddRoot', function() {
+		it('It should bubble the add event', function(done) {
+			tree.once("add", function(model) {
+				expect(model.get("id")).to.be('title_7');
 				expect(model.get("tagname")).to.be('h1');
 				done();
 			}, this);
 
-			tree.find('content').add({
-				id: 'title_6',
+
+			tree.find('root').add({
+				id: 'title_7',
+				tagname: 'h1'
+			});
+		});
+	});
+
+	describe('#bubbleRemoveRoot', function() {
+		it('It should bubble the remove event', function(done) {
+			tree.once("remove", function(model) {
+				expect(model.get("id")).to.be('title_8');
+				expect(model.get("tagname")).to.be('h1');
+				done();
+			}, this);
+
+			tree.find('root').add({
+				id: 'title_8',
 				tagname: 'h1'
 			});
 
-			tree.find('title_6').remove();
+			tree.find('title_8').remove();
 		});
 	});
 });

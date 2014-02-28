@@ -20,9 +20,7 @@
 
 			//Pass the events to the root node.
 			this._nodes.on("all", function(event, model, collection, options) {
-				if(!this.isRoot()) {
-					this.root().trigger.apply(this.root(), arguments);
-				}
+				this.root().trigger.apply(this.root(), arguments);
 			}, this);
 		},
 
