@@ -12,11 +12,16 @@
 	var wrapArray = function(array) { return _.extend(array, ArrMethods); };
 
 	var TreeModel = Backbone.TreeModel = Backbone.Model.extend({
+		nodesAttribute: 'nodes',
 		constructor: function tree(node) {
 			Backbone.Model.prototype.constructor.apply(this, arguments);
-			this._nodes = new TreeCollection();
+			// Don't let the TreeCollection assume that it knows what model it should use.
+			// We may be utilizing an extended TreeModel here.
+			this._nodes = new TreeCollection(undefined, {
+				model: this.constructor
+			});
 			this._nodes.parent = this;
-			if(node && node.nodes) this.add(node.nodes);
+			if(node && node[this.nodesAttribute]) this.add(node[this.nodesAttribute]);
 
 			//Pass the events to the root node.
 			this._nodes.on("all", function(event, model, collection, options) {
@@ -30,7 +35,7 @@
 		toJSON: function() {
 			var jsonObj = Backbone.Model.prototype.toJSON.apply(this, arguments);
 			var children = this._nodes.toJSON();
-			if(children.length) jsonObj.nodes = children;
+			if(children.length) jsonObj[this.nodesAttribute] = children;
 			return jsonObj;
 		},
 
@@ -222,7 +227,6 @@
 	});
 
 	var TreeCollection = Backbone.TreeCollection = Backbone.Collection.extend({
-		model: TreeModel,
 		where: function(attrs, opts) {
 			if(opts && opts.deep) {
 				var nodes = [];

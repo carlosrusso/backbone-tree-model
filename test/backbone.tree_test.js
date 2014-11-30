@@ -1,23 +1,25 @@
 var tree;
 describe('Backbone Tree', function() {
 	beforeEach(function() {
-		tree = new Backbone.TreeModel({
+		tree = new (Backbone.TreeModel.extend({
+			nodesAttribute: 'children'
+		}))({
 			id: 'root',
 			tagname: 'body',
-			nodes: [
+			children: [
 				{
 					id: 'wrapper',
 					tagname: 'div',
-					nodes: [
+					children: [
 						{
 							id: 'sidebar',
 							tagname: 'div',
 							width: 300,
-							nodes: [
+							children: [
 								{ tagname: 'p' },
 								{
 									tagname: 'ul',
-									nodes: [
+									children: [
 										{ tagname: 'li' },
 										{ tagname: 'li' },
 										{ tagname: 'li' }
@@ -30,17 +32,17 @@ describe('Backbone Tree', function() {
 							id: 'content',
 							tagname: 'div',
 							width: 600,
-							nodes: [
+							children: [
 								{
 									id: 'title',
 									tagname: 'h2'
 								},
 								{
 									tagname: 'p',
-									nodes: [
+									children: [
 										{
 											tagname: 'anchor',
-											nodes: [
+											children: [
 												{ tagname: 'span' }
 											]
 										}
@@ -141,11 +143,11 @@ describe('Backbone Tree', function() {
 				{
 					id: 'title_2',
 					tagname: 'h1',
-					nodes: [
+					children: [
 						{
 							id: 'anchor',
 							tagname: 'a',
-							nodes: [
+							children: [
 								{ tagname: 'span' }
 							]
 						}
@@ -261,12 +263,12 @@ describe('Backbone Tree', function() {
 			tree.find('sidebar').remove(); // perform a change
 
 			var treeJSON = tree.toJSON();
-			expect(treeJSON.nodes[0].nodes.length).to.be(1);
-			expect(treeJSON.nodes[0].nodes[0].id).to.be('content');
+			expect(treeJSON.children[0].children.length).to.be(1);
+			expect(treeJSON.children[0].children[0].id).to.be('content');
 
 			var wrapperJSON = tree.find('wrapper').toJSON();
-			expect(wrapperJSON.nodes.length).to.be(1);
-			expect(wrapperJSON.nodes[0].id).to.be('content');
+			expect(wrapperJSON.children.length).to.be(1);
+			expect(wrapperJSON.children[0].id).to.be('content');
 		});
 	});
 
