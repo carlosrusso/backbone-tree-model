@@ -2,6 +2,7 @@
   "name": "backbone-tree-model",
   "version": "1.0.0",
   "description": "A tree using Backbone Model and Collection",
+  "main": "src/backbone.treemodel.js",
   "directories": {
     "test": "test"
   },
