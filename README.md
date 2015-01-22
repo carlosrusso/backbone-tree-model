@@ -38,7 +38,10 @@ var treeObject = {
 	]
 };
 var tree = new Backbone.TreeModel(treeObject);
+
 ```
+
+Backbone.TreeModel can be extended with a `nodesAttribute` property. Defaults to `nodes`, but can be changed if the nodes exist in a container with a different name.
 
 ###2. Traversing Tree
 ```javascript
