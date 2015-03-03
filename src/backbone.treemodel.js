@@ -21,7 +21,11 @@
 				model: this.constructor
 			});
 			this._nodes.parent = this;
-			if(node && node[this.nodesAttribute]) this.add(node[this.nodesAttribute]);
+		    if(node && node[this.nodesAttribute]){
+			this.add(node[this.nodesAttribute]);
+			this.unset(this.nodesAttribute);
+		    }
+		    
 
 			//Pass the events to the root node.
 			this._nodes.on("all", function(event, model, collection, options) {
